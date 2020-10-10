@@ -1,37 +1,40 @@
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
+const handleRoute = require('../../utils/handleRoute');
 
 router.route('/').get(async (req, res) => {
-  const users = await usersService.getAll();
-  res.status(200).send(users.map(User.toResponse));
+  handleRoute(async () => {
+    const users = await usersService.getAll();
+    res.status(200).send(users.map(User.toResponse));
+  }, res);
 });
 
 router.route('/:id').get(async (req, res) => {
-  try {
+  handleRoute(async () => {
     const user = await usersService.getById(req.params.id);
     res.status(200).send(User.toResponse(user));
-  } catch (error) {
-    res.status(404).send(error.message);
-  }
+  }, res);
 });
 
 router.route('/').post(async (req, res) => {
-  const { name, login, password } = req.body;
+  handleRoute(async () => {
+    const { name, login, password } = req.body;
 
-  const newUser = await usersService.create(
-    new User({
-      name,
-      login,
-      password
-    })
-  );
+    const newUser = await usersService.create(
+      new User({
+        name,
+        login,
+        password
+      })
+    );
 
-  res.status(200).send(User.toResponse(newUser));
+    res.status(200).send(User.toResponse(newUser));
+  }, res);
 });
 
 router.route('/:id').put(async (req, res) => {
-  try {
+  handleRoute(async () => {
     const { name, login, password } = req.body;
     const { id } = req.params;
 
@@ -46,18 +49,14 @@ router.route('/:id').put(async (req, res) => {
     );
 
     res.status(200).send(User.toResponse(user));
-  } catch (error) {
-    res.status(404).send(error.message);
-  }
+  }, res);
 });
 
 router.route('/:id').delete(async (req, res) => {
-  try {
+  handleRoute(async () => {
     await usersService.remove(req.params.id);
     res.status(204).send('Deleted');
-  } catch (error) {
-    res.status(404).send(error.message);
-  }
+  }, res);
 });
 
 module.exports = router;
