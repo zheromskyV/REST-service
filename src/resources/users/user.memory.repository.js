@@ -1,6 +1,8 @@
+const DB = require('../../common/inMemory');
+const { users: usersDB } = DB;
+
 const getAll = async () => {
-  // TODO: mock implementation. should be replaced during task development
-  return [];
+  return usersDB;
 };
 
 module.exports = { getAll };
