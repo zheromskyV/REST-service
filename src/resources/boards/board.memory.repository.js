@@ -1,27 +1,27 @@
 const DB = require('../../common/inMemory');
 const NotFoundError = require('../../utils/errors');
 
-const TABLE_NAME = 'users';
-const ENTITY_NAME = 'user';
+const TABLE_NAME = 'boards';
+const ENTITY_NAME = 'board';
 
 const getAll = async () => DB.getAllEntities(TABLE_NAME);
 
 const getById = async id => {
-  const user = await DB.getEntityById(TABLE_NAME, id);
-  if (!user) {
+  const board = await DB.getEntityById(TABLE_NAME, id);
+  if (!board) {
     throw new NotFoundError(ENTITY_NAME, id);
   }
-  return user;
+  return board;
 };
 
-const create = async user => DB.createEntity(TABLE_NAME, user);
+const create = async board => DB.createEntity(TABLE_NAME, board);
 
-const update = async (id, user) => {
-  const updatedUser = await DB.updateEntity(TABLE_NAME, id, user);
-  if (!updatedUser) {
+const update = async (id, board) => {
+  const updatedBoard = await DB.updateEntity(TABLE_NAME, id, board);
+  if (!updatedBoard) {
     throw new NotFoundError(ENTITY_NAME, id);
   }
-  return updatedUser;
+  return updatedBoard;
 };
 
 const remove = async id => {
