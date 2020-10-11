@@ -33,4 +33,11 @@ const remove = async (boardId, id) => {
   }
 };
 
-module.exports = { getAll, getById, create, update, remove };
+const removeAll = async boardId => {
+  const tasks = await getAll(boardId);
+  tasks.forEach(async task => {
+    await remove(boardId, task.id);
+  });
+};
+
+module.exports = { getAll, getById, create, update, remove, removeAll };
