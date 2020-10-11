@@ -40,6 +40,7 @@ router.route('/:id').put(async (req, res) => {
     const board = await boardsService.update(
       id,
       new Board({
+        id,
         title,
         columns
       })

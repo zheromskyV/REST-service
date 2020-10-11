@@ -48,6 +48,7 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
       boardId,
       taskId,
       new Task({
+        id: taskId,
         title,
         order,
         description,
@@ -65,7 +66,7 @@ router.route('/:boardId/tasks/:taskId').delete(async (req, res) => {
   handleRoute(async () => {
     const { boardId, taskId } = req.params;
 
-    await taskId.remove(boardId, taskId);
+    await tasksService.remove(boardId, taskId);
     res.status(204).send('Deleted');
   }, res);
 });
