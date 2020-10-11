@@ -1,5 +1,6 @@
 const DB = require('../../common/inMemory');
 const NotFoundError = require('../../utils/errors');
+const Task = require('./task.model');
 
 const TABLE_NAME = 'tasks';
 const ENTITY_NAME = 'task';
@@ -40,4 +41,22 @@ const removeAll = async boardId => {
   });
 };
 
-module.exports = { getAll, getById, create, update, remove, removeAll };
+const unassignUser = async userId => {
+  const boardTasks = await getAll(undefined);
+  const tasks = Object.values(boardTasks);
+  tasks.flat().forEach(async task => {
+    if (task.userId === userId) {
+      await update(task.boardId, task.id, new Task({ ...task, userId: null }));
+    }
+  });
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+  removeAll,
+  unassignUser
+};

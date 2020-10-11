@@ -50,8 +50,20 @@ const DB = {
   );
 })();
 
-DB.getAllEntities = async (tableName, innerKey) =>
-  innerKey === undefined ? [...DB[tableName]] : [...DB[tableName][innerKey]];
+DB.getAllEntities = async (tableName, innerKey) => {
+  if (tableName === 'tasks') {
+    if (innerKey === undefined) {
+      return { ...DB.tasks };
+    }
+    if (DB[tableName][innerKey] === undefined) {
+      DB[tableName][innerKey] = [];
+    }
+    return [...DB[tableName][innerKey]];
+  }
+  return innerKey === undefined
+    ? [...DB[tableName]]
+    : [...DB[tableName][innerKey]];
+};
 
 DB.getEntityById = async (tableName, id, innerKey) => {
   const table =

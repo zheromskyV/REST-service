@@ -12,4 +12,14 @@ const remove = (boardId, id) => tasksRepo.remove(boardId, id);
 
 const removeAll = boardId => tasksRepo.removeAll(boardId);
 
-module.exports = { getAll, getById, create, update, remove, removeAll };
+const unassignUser = userId => tasksRepo.unassignUser(userId);
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  remove,
+  removeAll,
+  unassignUser
+};
