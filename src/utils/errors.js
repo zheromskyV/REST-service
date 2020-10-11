@@ -1,6 +1,6 @@
 class NotFoundError extends Error {
-  constructor(entity, id) {
-    super(`There is no ${entity} with id ${id}`);
+  constructor(entity, id, extraMsg = '') {
+    super(`There is no ${entity} with id ${id} ${extraMsg}`);
   }
 }
 
