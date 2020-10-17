@@ -4,6 +4,7 @@ const path = require('path');
 const YAML = require('yamljs');
 
 const logHandler = require('./logging/logHandler');
+const errorHandler = require('./logging/errorHandler');
 const userRouter = require('./resources/users/user.router');
 const taskRouter = require('./resources/tasks/task.router');
 const boardRouter = require('./resources/boards/board.router');
@@ -27,5 +28,6 @@ app.use(logHandler);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards', taskRouter);
+app.use(errorHandler);
 
 module.exports = app;
