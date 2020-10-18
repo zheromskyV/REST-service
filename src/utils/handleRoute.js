@@ -1,15 +1,7 @@
-const NotFoundError = require('./errors');
-
-const handleRoute = (func, response) => {
-  return func()
-    .then(res => res)
-    .catch(error => {
-      if (error instanceof NotFoundError) {
-        response.status(404).send(error.message);
-      } else {
-        response.status(500).send('Internal error');
-      }
-    });
+const handleRoute = func => {
+  return (req, res, next) => {
+    func(req, res, next).catch(err => next(err));
+  };
 };
 
 module.exports = handleRoute;

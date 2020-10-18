@@ -3,22 +3,22 @@ const User = require('./user.model');
 const usersService = require('./user.service');
 const handleRoute = require('../../utils/handleRoute');
 
-router.route('/').get(async (req, res) => {
-  handleRoute(async () => {
+router.route('/').get(
+  handleRoute(async (req, res) => {
     const users = await usersService.getAll();
     res.status(200).send(users.map(User.toResponse));
-  }, res);
-});
+  })
+);
 
-router.route('/:id').get(async (req, res) => {
-  handleRoute(async () => {
+router.route('/:id').get(
+  handleRoute(async (req, res) => {
     const user = await usersService.getById(req.params.id);
     res.status(200).send(User.toResponse(user));
-  }, res);
-});
+  })
+);
 
-router.route('/').post(async (req, res) => {
-  handleRoute(async () => {
+router.route('/').post(
+  handleRoute(async (req, res) => {
     const { name, login, password } = req.body;
 
     const newUser = await usersService.create(
@@ -30,11 +30,11 @@ router.route('/').post(async (req, res) => {
     );
 
     res.status(200).send(User.toResponse(newUser));
-  }, res);
-});
+  })
+);
 
-router.route('/:id').put(async (req, res) => {
-  handleRoute(async () => {
+router.route('/:id').put(
+  handleRoute(async (req, res) => {
     const { name, login, password } = req.body;
     const { id } = req.params;
 
@@ -49,14 +49,14 @@ router.route('/:id').put(async (req, res) => {
     );
 
     res.status(200).send(User.toResponse(user));
-  }, res);
-});
+  })
+);
 
-router.route('/:id').delete(async (req, res) => {
-  handleRoute(async () => {
+router.route('/:id').delete(
+  handleRoute(async (req, res) => {
     await usersService.remove(req.params.id);
     res.status(204).send('Deleted');
-  }, res);
-});
+  })
+);
 
 module.exports = router;
