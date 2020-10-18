@@ -3,7 +3,7 @@ const getLog = require('../utils/getLog');
 
 const logHandler = (req, res, next) => {
   logger.info({
-    message: getLog({ ...req, ...res })
+    message: getLog({ ...req })
   });
 
   next();

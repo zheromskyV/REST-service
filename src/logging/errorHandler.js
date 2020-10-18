@@ -12,7 +12,7 @@ const errorHandler = (err, req, res, _) => {
     res.status(500).send('Internal server error');
   }
 
-  logger.error(getLog({ ...res, ...req, message }, true));
+  logger.error(getLog({ ...req, ...res, message }, true));
 };
 
 module.exports = errorHandler;
