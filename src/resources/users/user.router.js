@@ -44,7 +44,7 @@ router.route('/:id').put(
         name,
         login,
         password,
-        id
+        _id: id
       })
     );
 

@@ -48,7 +48,7 @@ router.route('/:boardId/tasks/:taskId').put(
       boardId,
       taskId,
       new Task({
-        id: taskId,
+        _id: taskId,
         title,
         order,
         description,
