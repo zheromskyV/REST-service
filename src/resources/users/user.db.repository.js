@@ -5,26 +5,15 @@ const ENTITY_NAME = 'user';
 
 const getAll = async () => User.find({});
 
-const getById = async id => {
-  const user = await User.findById(id);
-  if (!user) {
-    throw new NotFoundError(ENTITY_NAME, id);
-  }
-  return user;
-};
+const getById = async id => User.findOne({ _id: id });
 
 const create = async user => User.create(user);
 
-const update = async (id, user) => {
-  const updatedUser = await User.updateOne({ _id: id }, user);
-  if (!updatedUser) {
-    throw new NotFoundError(ENTITY_NAME, id);
-  }
-  return updatedUser;
-};
+const update = async (id, user) => User.findOneAndUpdate({ _id: id }, user);
 
 const remove = async id => {
-  if ((await User.deleteOne({ _id: id })).ok === 0) {
+  const res = User.remove({ _id: id });
+  if (!res) {
     throw new NotFoundError(ENTITY_NAME, id);
   }
 };

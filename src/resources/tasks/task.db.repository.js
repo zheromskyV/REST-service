@@ -1,60 +1,36 @@
-const NotFoundError = require('../../utils/errors');
 const Task = require('./task.model');
+const NotFoundError = require('../../utils/errors');
 
 const ENTITY_NAME = 'task';
 
 const getExtraErrorMsg = boardId => `on board with id ${boardId}`;
 
-const getAll = async boardId => await Task.find({ boardId });
+const getAll = async boardId => Task.find({ boardId });
 
 const getById = async (boardId, id) => {
-  const board = await Task.findOne({ _id: id, boardId });
-  if (!board) {
+  const res = await Task.findOne({ boardId, _id: id });
+  if (!res) {
     throw new NotFoundError(ENTITY_NAME, id, getExtraErrorMsg(boardId));
   }
-  return board;
+  return res;
 };
 
-const create = async (boardId, task) => Task.create({ ...task, boardId });
+const create = async (boardId, task) => Task.create(task);
 
-const update = async (boardId, id, task) => {
-  const updatedTask = await Task.updateOne(
-    { _id: id, boardId },
-    { ...task, boardId }
-  );
-  console.log('xxx', updatedTask);
-  if (!updatedTask) {
-    throw new NotFoundError(ENTITY_NAME, id, getExtraErrorMsg(boardId));
-  }
-  return updatedTask;
-};
+const update = async (boardId, id, task) =>
+  Task.findOneAndUpdate({ _id: id }, task);
 
 const remove = async (boardId, id) => {
-  if ((await Task.deleteOne({ _id: id, boardId })).ok === 0) {
+  const res = await Task.findOneAndRemove({ boardId, _id: id });
+  if (!res) {
     throw new NotFoundError(ENTITY_NAME, id, getExtraErrorMsg(boardId));
   }
 };
 
-const removeAll = async boardId => {
-  // const tasks = await getAll(boardId);
-  // tasks.forEach(async task => {
-  //   await remove(boardId, task.id);
-  // });
-  await Task.deleteMany({ boardId });
-};
+const removeAll = async boardId => Task.deleteMany({ boardId });
 
 const unassignUser = async userId => {
-  // const boardTasks = await getAll(undefined);
-  // const tasks = Object.values(boardTasks);
-  // tasks.flat().forEach(async task => {
-  //   if (task.userId === userId) {
-  //     await update(task.boardId, task.id, new Task({ ...task, userId: null }));
-  //   }
-  // });
-  const allTasks = await Task.find({});
-  allTasks.forEach(async task => {
-    await Task.updateOne({ userId }, { ...task, userId: null });
-  });
+  await Task.updateMany({ userId }, { userId: null });
 };
 
 module.exports = {

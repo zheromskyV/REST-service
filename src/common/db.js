@@ -11,6 +11,7 @@ module.exports = fn => {
   db.on('error', () => console.error('DB connection error'));
   db.once('open', () => {
     console.log('DB is connected');
+    // db.dropDatabase();
     fn();
   });
 };

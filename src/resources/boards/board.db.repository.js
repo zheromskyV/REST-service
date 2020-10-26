@@ -6,25 +6,20 @@ const ENTITY_NAME = 'board';
 const getAll = async () => Board.find({});
 
 const getById = async id => {
-  const board = await Board.findById(id);
-  if (!board) {
+  const res = await Board.findOne({ _id: id });
+  if (!res) {
     throw new NotFoundError(ENTITY_NAME, id);
   }
-  return board;
+  return res;
 };
 
 const create = async board => Board.create(board);
 
-const update = async (id, board) => {
-  const updatedBoard = await Board.updateOne({ _id: id }, board);
-  if (!updatedBoard) {
-    throw new NotFoundError(ENTITY_NAME, id);
-  }
-  return updatedBoard;
-};
+const update = async (id, board) => Board.findOneAndUpdate({ _id: id }, board);
 
 const remove = async id => {
-  if ((await Board.deleteOne({ _id: id })).ok === 0) {
+  const res = await Board.remove({ _id: id });
+  if (!res) {
     throw new NotFoundError(ENTITY_NAME, id);
   }
 };
