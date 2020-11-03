@@ -1,5 +1,6 @@
 const User = require('./user.model');
 const NotFoundError = require('../../utils/errors');
+const { hashPassword } = require('../../utils/hashHelper');
 
 const ENTITY_NAME = 'user';
 
@@ -7,7 +8,17 @@ const getAll = async () => User.find({});
 
 const getById = async id => User.findOne({ _id: id });
 
-const create = async user => User.create(user);
+const getByLogin = async login => User.findOne({ login });
+
+const create = async user => {
+  const { password } = user;
+  const hashedPassword = await hashPassword(password);
+  const newUser = {
+    ...user,
+    password: hashedPassword
+  };
+  return User.create(newUser);
+};
 
 const update = async (id, user) => User.findOneAndUpdate({ _id: id }, user);
 
@@ -18,4 +29,4 @@ const remove = async id => {
   }
 };
 
-module.exports = { getAll, getById, create, update, remove };
+module.exports = { getAll, getById, create, update, remove, getByLogin };
