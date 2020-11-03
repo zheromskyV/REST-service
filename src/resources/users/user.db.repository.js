@@ -1,5 +1,5 @@
 const User = require('./user.model');
-const NotFoundError = require('../../utils/errors');
+const { NotFoundError } = require('../../utils/errors');
 const { hashPassword } = require('../../utils/hashHelper');
 
 const ENTITY_NAME = 'user';

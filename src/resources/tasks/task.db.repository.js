@@ -1,5 +1,5 @@
 const Task = require('./task.model');
-const NotFoundError = require('../../utils/errors');
+const { NotFoundError } = require('../../utils/errors');
 
 const ENTITY_NAME = 'task';
 

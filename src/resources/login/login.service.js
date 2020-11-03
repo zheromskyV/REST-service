@@ -5,23 +5,22 @@ const usersRepo = require('../users/user.db.repository');
 
 const signToken = async (login, password) => {
   const user = usersRepo.getByLogin(login);
-
   if (!user) {
     return null;
   }
 
   const { password: hashedPassword } = user;
   const comparisonRes = await checkHashedPassword(password, hashedPassword);
-
-  if (comparisonRes) {
-    const { id, login: l } = user;
-    const token = jwt.sign({ id, l }, SECRET_KEY, {
-      expiresIn: EXPIRE_TIME
-    });
-    return token;
+  if (!comparisonRes) {
+    return null;
   }
 
-  return null;
+  const { id, login: l } = user;
+  const token = jwt.sign({ id, l }, SECRET_KEY, {
+    expiresIn: EXPIRE_TIME
+  });
+
+  return token;
 };
 
 module.exports = {

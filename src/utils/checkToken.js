@@ -1,25 +1,22 @@
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../common/config');
+const { UnauthorizedError } = require('./errors');
 
 module.exports = (req, res, next) => {
-  const authHeader = req.header('Authorization');
-
-  if (authHeader !== undefined) {
-    const tokenString = req.header('Authorization');
-
-    const [type, token] = tokenString.split(' ');
-
-    if (type !== 'Bearer') {
-      res.status(401).send('Unauthorized user!');
-    } else {
-      try {
-        jwt.verify(token, SECRET_KEY);
-        return next();
-      } catch (err) {
-        return next(err);
-      }
-    }
+  const tokenString = req.headers.authorization;
+  if (tokenString === undefined) {
+    throw new UnauthorizedError();
   }
 
-  res.status(401).send('Unauthorized user!');
+  const [type, token] = tokenString.split(' ');
+  if (type !== 'Bearer') {
+    throw new UnauthorizedError();
+  }
+
+  const isVerified = jwt.verify(token, SECRET_KEY);
+  if (!isVerified) {
+    throw new UnauthorizedError();
+  }
+
+  next();
 };
