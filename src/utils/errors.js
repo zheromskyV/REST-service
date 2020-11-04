@@ -8,4 +8,16 @@ class NotFoundError extends Error {
   }
 }
 
-module.exports = NotFoundError;
+class UnauthorizedError extends Error {
+  constructor() {
+    super('Unauthorized user!');
+  }
+}
+
+class ForbiddenError extends Error {
+  constructor() {
+    super('Forbidden!');
+  }
+}
+
+module.exports = { NotFoundError, UnauthorizedError, ForbiddenError };

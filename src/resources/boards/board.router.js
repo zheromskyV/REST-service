@@ -21,12 +21,10 @@ router.route('/').post(
   handleRoute(async (req, res) => {
     const { title, columns } = req.body;
 
-    const newBoard = await boardsService.create(
-      new Board({
-        title,
-        columns
-      })
-    );
+    const newBoard = await boardsService.create({
+      title,
+      columns
+    });
 
     res.status(200).send(Board.toResponse(newBoard));
   })
@@ -37,14 +35,11 @@ router.route('/:id').put(
     const { title, columns } = req.body;
     const { id } = req.params;
 
-    const board = await boardsService.update(
-      id,
-      new Board({
-        _id: id,
-        title,
-        columns
-      })
-    );
+    const board = await boardsService.update(id, {
+      _id: id,
+      title,
+      columns
+    });
 
     res.status(200).send(Board.toResponse(board));
   })

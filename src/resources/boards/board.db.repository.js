@@ -1,5 +1,5 @@
 const Board = require('./board.model');
-const NotFoundError = require('../../utils/errors');
+const { NotFoundError } = require('../../utils/errors');
 
 const ENTITY_NAME = 'board';
 
