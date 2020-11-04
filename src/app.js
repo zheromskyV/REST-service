@@ -43,7 +43,4 @@ process
   .on('unhandledRejection', unhandledRejection)
   .on('uncaughtException', uncaughtExceptionHandler);
 
-// Promise.reject(Error('Oops!'));
-// throw Error('Oops!');
-
 module.exports = app;

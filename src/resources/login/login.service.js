@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY, EXPIRE_TIME } = require('../../common/config');
+const { JWT_SECRET_KEY } = require('../../common/config');
 const { checkHashedPassword } = require('../../utils/hashHelper');
 const usersRepo = require('../users/user.db.repository');
 
 const signToken = async (login, password) => {
-  const user = usersRepo.getByLogin(login);
+  const user = await usersRepo.getByLogin(login);
   if (!user) {
     return null;
   }
@@ -15,10 +15,7 @@ const signToken = async (login, password) => {
     return null;
   }
 
-  const { id, login: l } = user;
-  const token = jwt.sign({ id, l }, SECRET_KEY, {
-    expiresIn: EXPIRE_TIME
-  });
+  const token = jwt.sign({ id: user._id, login }, JWT_SECRET_KEY);
 
   return token;
 };

@@ -11,13 +11,8 @@ const getById = async id => User.findOne({ _id: id });
 const getByLogin = async login => User.findOne({ login });
 
 const create = async user => {
-  const { password } = user;
-  const hashedPassword = await hashPassword(password);
-  const newUser = {
-    ...user,
-    password: hashedPassword
-  };
-  return User.create(newUser);
+  const hashedPassword = await hashPassword(user.password);
+  return User.create({ ...user, password: hashedPassword });
 };
 
 const update = async (id, user) => User.findOneAndUpdate({ _id: id }, user);

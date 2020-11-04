@@ -21,13 +21,11 @@ router.route('/').post(
   handleRoute(async (req, res) => {
     const { name, login, password } = req.body;
 
-    const newUser = await usersService.create(
-      new User({
-        name,
-        login,
-        password
-      })
-    );
+    const newUser = await usersService.create({
+      name,
+      login,
+      password
+    });
 
     res.status(200).send(User.toResponse(newUser));
   })
@@ -38,15 +36,12 @@ router.route('/:id').put(
     const { name, login, password } = req.body;
     const { id } = req.params;
 
-    const user = await usersService.update(
-      id,
-      new User({
-        name,
-        login,
-        password,
-        _id: id
-      })
-    );
+    const user = await usersService.update(id, {
+      name,
+      login,
+      password,
+      _id: id
+    });
 
     res.status(200).send(User.toResponse(user));
   })

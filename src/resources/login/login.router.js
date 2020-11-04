@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
     throw new ForbiddenError();
   }
 
-  res.status(200).json({ token });
+  res.status(200).send({ token });
 });
 
 module.exports = router;
